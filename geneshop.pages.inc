@@ -629,9 +629,15 @@ function geneshop_polypeptides() {
  * and sending to clustal omega (REST) for multiple alignment.
  */
 function geneshop_sequences_alignment() {
+/*
+ * For testing function, required more than one sequence.
+ *  $mRNA_id = array(3,20,37,53,68);
+ *  $data = '';
+ *  foreach ($mRNA_id as $feature_id) {
+ */
   module_load_include('inc', 'tripal_feature', 'tripal_feature.api');
   module_load_include('inc', 'clustalo', 'clustalo.restclient');
-/*  $sql = '
+  $sql = '
     SELECT FRM.subject_id as feature_id
     FROM {gene} G
       INNER JOIN {feature_relationship} FRM  ON FRM.object_id = G.gene_id
@@ -642,12 +648,7 @@ function geneshop_sequences_alignment() {
   foreach ($_SESSION['basket']['items'] as $nid => $value) {
     $args = array(':nid' => $nid);
     $result = db_query($sql, $args)->fetchObject();
-    $feature_id = $result->feature_id;*/
-
-// For testing function, required more than one sequence.
-  $mRNA_id = array(3,20,37,53,68);
-  $data = '';
-  foreach ($mRNA_id as $feature_id) {
+    $feature_id = $result->feature_id;
     $sequence = array();
     $sequence = tripal_get_feature_sequences(
       array(
@@ -670,7 +671,6 @@ function geneshop_sequences_alignment() {
 
 // set parameter and send to ClustalO service.
   $parameters = array(
-    'email' => 'tongta.bif11@mail.kmutt.ac.th',
     'sequence' => $data,
   );
   $msa = clustalo_submit_job($parameters, $phylo = false);
@@ -678,11 +678,21 @@ function geneshop_sequences_alignment() {
   print $msa;
   drupal_exit();
 }
-
+/*
+ * Function for retrieving polypeptide sequences from Chado
+ * sending to clustal omega (REST) for multiple alignment
+ * and re-draw tree through execution the python script.
+ */
 function geneshop_phylo() {
+/*
+ * For testing function, required more than one sequence.
+ *  $mRNA_id = array(3,20,37,53,68);
+ *  $data = '';
+ *  foreach ($mRNA_id as $feature_id) {
+ */
   module_load_include('inc', 'tripal_feature', 'tripal_feature.api');
   module_load_include('inc', 'clustalo', 'clustalo.restclient');
-/*  $sql = '
+  $sql = '
     SELECT FRM.subject_id as feature_id
     FROM {gene} G
       INNER JOIN {feature_relationship} FRM  ON FRM.object_id = G.gene_id
@@ -693,12 +703,7 @@ function geneshop_phylo() {
   foreach ($_SESSION['basket']['items'] as $nid => $value) {
     $args = array(':nid' => $nid);
     $result = db_query($sql, $args)->fetchObject();
-    $feature_id = $result->feature_id;*/
-
-// For testing function, required more than one sequence.
-  $mRNA_id = array(3,20,37,53,68);
-  $data = '';
-  foreach ($mRNA_id as $feature_id) {
+    $feature_id = $result->feature_id;
     $sequence = array();
     $sequence = tripal_get_feature_sequences(
       array(
@@ -721,7 +726,6 @@ function geneshop_phylo() {
 
 // set parameter and send to ClustalO service.
   $parameters = array(
-    'email' => 'admin@licebase.org',
     'sequence' => $data,
   );
   $phylo = clustalo_submit_job($parameters, true);
